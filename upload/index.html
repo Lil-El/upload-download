@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <input type="file" name="file" id="file" />
+    <progress id="progress" value="0" max="100"></progress>
+    <input type="button" value="upload" onclick="init()" />
+    <input type="button" value="pause" onclick="pause()" />
+    <script>
+      const chunkSize = 1024 * 40;
+      let progress = document.getElementById("progress");
+      let isPause = false;
+      let stat = 0;
+      function pause() {
+        isPause = !isPause;
+        if (!isPause) {
+          uploadFile(stat);
+        }
+      }
+      function init() {
+        let fileObj = document.getElementById("file").files[0];
+        progress.max = fileObj.size;
+        let xhr = new XMLHttpRequest();
+        let fd = new FormData();
+        fd.append("fileName", fileObj.name);
+        xhr.open("POST", "http://127.0.0.1:8080/queryName", true);
+        xhr.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            let start = parseInt(this.responseText);
+            progress.value = start;
+            if (start === fileObj.size) {
+              console.log("upload success");
+              return;
+            }
+            uploadFile(start);
+          }
+        };
+        xhr.send(fd);
+      }
+      function uploadFile(start) {
+        let fileObj = document.getElementById("file").files[0];
+        if (start >= fileObj.size) {
+          stat = 0;
+          return;
+        }
+        let end =
+          start + chunkSize > fileObj.size ? fileObj.size : start + chunkSize;
+        let fd = new FormData();
+        fd.append("file", fileObj.slice(start, end), fileObj.name);
+        fd.append("index", Math.ceil(start / chunkSize).toString());
+        fd.append("isEnd", end >= fileObj.size ? true : false);
+        let xhr = new XMLHttpRequest();
+        xhr.open("post", "http://127.0.0.1:8080/uploadFile", true);
+        xhr.onload = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            progress.value = end;
+            if (!isPause) {
+              stat = end;
+              uploadFile(end);
+            }
+          }
+        };
+        xhr.send(fd);
+      }
+    </script>
+  </body>
+</html>
