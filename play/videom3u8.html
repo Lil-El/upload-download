@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Emmm</title>
+    <link
+      href="https://unpkg.com/video.js/dist/video-js.css"
+      rel="stylesheet"
+    />
+    <style>
+      .video-js .vjs-menu-button-inline.vjs-slider-active,
+      .video-js .vjs-menu-button-inline:focus,
+      .video-js .vjs-menu-button-inline:hover,
+      .video-js.vjs-no-flex .vjs-menu-button-inline {
+        width: 10em;
+      }
+
+      .video-js .vjs-controls-disabled .vjs-big-play-button {
+        display: none !important;
+      }
+
+      .video-js .vjs-control {
+        width: 3em;
+      }
+
+      .video-js .vjs-menu-button-inline:before {
+        width: 1.5em;
+      }
+
+      .vjs-menu-button-inline .vjs-menu {
+        left: 3em;
+      }
+
+      .vjs-paused.vjs-has-started.video-js .vjs-big-play-button,
+      .video-js.vjs-ended .vjs-big-play-button,
+      .video-js.vjs-paused .vjs-big-play-button {
+        display: block;
+      }
+
+      .video-js .vjs-load-progress div,
+      .vjs-seeking .vjs-big-play-button,
+      .vjs-waiting .vjs-big-play-button {
+        display: none !important;
+      }
+
+      .video-js .vjs-mouse-display:after,
+      .video-js .vjs-play-progress:after {
+        padding: 0 0.4em 0.3em;
+      }
+
+      .video-js.vjs-ended .vjs-loading-spinner {
+        display: none;
+      }
+
+      .video-js.vjs-ended .vjs-big-play-button {
+        display: block !important;
+      }
+
+      .video-js *,
+      .video-js:after,
+      .video-js:before {
+        box-sizing: inherit;
+        font-size: inherit;
+        color: inherit;
+        line-height: inherit;
+      }
+
+      .video-js.vjs-fullscreen,
+      .video-js.vjs-fullscreen .vjs-tech {
+        width: 100% !important;
+        height: 100% !important;
+      }
+
+      .video-js {
+        font-size: 14px;
+        overflow: hidden;
+      }
+
+      .video-js .vjs-control {
+        color: inherit;
+      }
+
+      .video-js .vjs-menu-button-inline:hover,
+      .video-js.vjs-no-flex .vjs-menu-button-inline {
+        width: 8.35em;
+      }
+
+      .video-js
+        .vjs-volume-menu-button.vjs-volume-menu-button-horizontal:hover
+        .vjs-menu
+        .vjs-menu-content {
+        height: 3em;
+        width: 6.35em;
+      }
+
+      .video-js .vjs-control:focus:before,
+      .video-js .vjs-control:hover:before {
+        text-shadow: 0 0 1em #fff, 0 0 1em #fff, 0 0 1em #fff;
+      }
+
+      .video-js .vjs-spacer,
+      .video-js .vjs-time-control {
+        display: -webkit-box;
+        display: -moz-box;
+        display: -ms-flexbox;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-flex: 1 1 auto;
+        -moz-box-flex: 1 1 auto;
+        -webkit-flex: 1 1 auto;
+        -ms-flex: 1 1 auto;
+        flex: 1 1 auto;
+      }
+
+      .video-js .vjs-time-control {
+        -webkit-box-flex: 0 1 auto;
+        -moz-box-flex: 0 1 auto;
+        -webkit-flex: 0 1 auto;
+        -ms-flex: 0 1 auto;
+        flex: 0 1 auto;
+        width: auto;
+      }
+
+      .video-js .vjs-time-control.vjs-time-divider {
+        width: 14px;
+      }
+
+      .video-js .vjs-time-control.vjs-time-divider div {
+        width: 100%;
+        text-align: center;
+      }
+
+      .video-js .vjs-time-control.vjs-current-time {
+        margin-left: 1em;
+      }
+
+      .video-js .vjs-time-control .vjs-current-time-display,
+      .video-js .vjs-time-control .vjs-duration-display {
+        width: 100%;
+      }
+
+      .video-js .vjs-time-control .vjs-current-time-display {
+        text-align: right;
+      }
+
+      .video-js .vjs-time-control .vjs-duration-display {
+        text-align: left;
+      }
+
+      .video-js .vjs-play-progress:before,
+      .video-js .vjs-progress-control .vjs-play-progress:before,
+      .video-js .vjs-remaining-time,
+      .video-js .vjs-volume-level:after,
+      .video-js .vjs-volume-level:before,
+      .video-js.vjs-live .vjs-time-control.vjs-current-time,
+      .video-js.vjs-live .vjs-time-control.vjs-duration,
+      .video-js.vjs-live .vjs-time-control.vjs-time-divider,
+      .video-js.vjs-no-flex .vjs-time-control.vjs-remaining-time {
+        display: none;
+      }
+
+      .video-js.vjs-no-flex .vjs-time-control {
+        display: table-cell;
+        width: 4em;
+      }
+
+      .video-js .vjs-progress-control {
+        position: absolute;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 0.5em;
+        top: -0.5em;
+        transition: all 0.2s;
+      }
+
+      .video-js .vjs-progress-control .vjs-load-progress,
+      .video-js .vjs-progress-control .vjs-play-progress,
+      .video-js .vjs-progress-control .vjs-progress-holder {
+        height: 100%;
+      }
+
+      .video-js .vjs-progress-control .vjs-progress-holder {
+        margin: 0;
+      }
+
+      .video-js .vjs-progress-control:hover {
+        height: 1.2em;
+        top: -1.2em;
+      }
+
+      .video-js .vjs-control-bar {
+        -webkit-transition: -webkit-transform 0.1s ease 0s;
+        -moz-transition: -moz-transform 0.1s ease 0s;
+        -ms-transition: -ms-transform 0.1s ease 0s;
+        -o-transition: -o-transform 0.1s ease 0s;
+        transition: transform 0.1s ease 0s;
+      }
+
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-active
+        .vjs-control-bar,
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive
+        .vjs-control-bar,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-active
+        .vjs-control-bar,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive
+        .vjs-control-bar,
+      .video-js.vjs-has-started.vjs-playing.vjs-user-inactive .vjs-control-bar {
+        visibility: visible;
+        opacity: 1;
+        -webkit-backface-visibility: hidden;
+        -webkit-transform: translateY(3em);
+        -moz-transform: translateY(3em);
+        -ms-transform: translateY(3em);
+        -o-transform: translateY(3em);
+        transform: translateY(3em);
+        -webkit-transition: -webkit-transform 1s ease 0s;
+        -moz-transition: -moz-transform 1s ease 0s;
+        -ms-transition: -ms-transform 1s ease 0s;
+        -o-transition: -o-transform 1s ease 0s;
+        transition: transform 1s ease 0s;
+      }
+
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-active
+        .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive
+        .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-active
+        .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive
+        .vjs-progress-control,
+      .video-js.vjs-has-started.vjs-playing.vjs-user-inactive
+        .vjs-progress-control {
+        height: 0.25em;
+        top: -0.25em;
+        pointer-events: none;
+        -webkit-transition: height 1s, top 1s;
+        -moz-transition: height 1s, top 1s;
+        -ms-transition: height 1s, top 1s;
+        -o-transition: height 1s, top 1s;
+        transition: height 1s, top 1s;
+      }
+
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-active.vjs-fullscreen
+        .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive.vjs-fullscreen
+        .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-active.vjs-fullscreen
+        .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive.vjs-fullscreen
+        .vjs-progress-control,
+      .video-js.vjs-has-started.vjs-playing.vjs-user-inactive.vjs-fullscreen
+        .vjs-progress-control {
+        opacity: 0;
+        -webkit-transition: opacity 1s ease 1s;
+        -moz-transition: opacity 1s ease 1s;
+        -ms-transition: opacity 1s ease 1s;
+        -o-transition: opacity 1s ease 1s;
+        transition: opacity 1s ease 1s;
+      }
+
+      .video-js.vjs-live .vjs-live-control {
+        margin-left: 1em;
+      }
+
+      .video-js .vjs-big-play-button {
+        top: 50%;
+        left: 50%;
+        margin-left: -1em;
+        margin-top: -1em;
+        width: 2em;
+        height: 2em;
+        line-height: 2em;
+        border: none;
+        border-radius: 50%;
+        font-size: 3.5em;
+        background-color: rgba(0, 0, 0, 0.45);
+        color: #fff;
+        -webkit-transition: border-color 0.4s, outline 0.4s,
+          background-color 0.4s;
+        -moz-transition: border-color 0.4s, outline 0.4s, background-color 0.4s;
+        -ms-transition: border-color 0.4s, outline 0.4s, background-color 0.4s;
+        -o-transition: border-color 0.4s, outline 0.4s, background-color 0.4s;
+        transition: border-color 0.4s, outline 0.4s, background-color 0.4s;
+      }
+
+      .video-js .vjs-menu-button-popup .vjs-menu {
+        left: -3em;
+      }
+
+      .video-js .vjs-menu-button-popup .vjs-menu .vjs-menu-content {
+        background-color: transparent;
+        width: 12em;
+        left: -1.5em;
+        padding-bottom: 0.5em;
+      }
+
+      .video-js .vjs-big-play-button {
+        background-color: #000000;
+        font-size: 3.5em;
+        border-radius: 19%;
+        height: 1.4em !important;
+        line-height: 1.4em !important;
+        margin-top: -0.7em !important;
+      }
+
+      .video-js:hover .vjs-big-play-button,
+      .video-js .vjs-big-play-button:focus,
+      .video-js .vjs-big-play-button:active {
+        background-color: #000000;
+      }
+      /* HD button*/
+      #hd {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .vjs-icon-hd {
+        font-size: 1.6em;
+      }
+      /* 加载loading */
+      .video-js .vjs-loading-spinner {
+        border-color: #029ce4;
+      }
+
+      .video-js .vjs-control-bar2 {
+        background-color: #000;
+      }
+      /* 菜单项 */
+      .video-js .vjs-menu-button-popup .vjs-menu .vjs-menu-item,
+      .video-js .vjs-menu-button-popup .vjs-menu .vjs-menu-title {
+        background-color: #151b17e3;
+        padding: 0.5em;
+      }
+      .video-js .vjs-menu-button-popup .vjs-menu .vjs-menu-item:first-child {
+        border-top-left-radius: 0.3rem;
+        border-top-right-radius: 0.3rem;
+      }
+      .video-js .vjs-menu-button-popup .vjs-menu .vjs-menu-item:last-child {
+        border-bottom-left-radius: 0.3rem;
+        border-bottom-right-radius: 0.3rem;
+      }
+      .video-js .vjs-menu-button-popup .vjs-menu .vjs-menu-item.vjs-selected {
+        background-color: #029ce4;
+      }
+      .video-js .vjs-control-bar {
+        background-color: #000000 !important;
+        color: #ffffff;
+        font-size: 13px;
+      }
+      @keyframes run {
+        0% {
+        }
+        100% {
+          background-position: 22px 0;
+        }
+      }
+      /* slider-整体 */
+      .video-js .vjs-slider {
+        background: rgba(129, 151, 180, 0.5);
+      }
+      /* load-加载进度 */
+      .video-js .vjs-load-progress {
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+        background: rgba(117, 211, 240, 0.5);
+      }
+      /* play-播放进度 */
+      .video-js .vjs-play-progress,
+      .video-js .vjs-volume-level {
+        /* background-image: linear-gradient(45deg, #5cfd9a, #02a8e4); */
+        background: repeating-linear-gradient(-45deg, #fff 0 5%, #02a8e4 0 15%);
+        background-size: 22px 125px;
+        animation: 0.8s run linear infinite;
+        border-top-right-radius: 0.5rem;
+        border-bottom-right-radius: 0.5rem;
+      }
+      .vjs-playback-rate .vjs-playback-rate-value {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        pointer-events: none;
+        font-size: 1.2em;
+      }
+    </style>
+    <style>
+      #SharpnessWrap:hover #SharpnessMenu {
+        display: block;
+        z-index: 100;
+      }
+    </style>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://unpkg.com/video.js/dist/video.js"></script>
+    <script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.js"></script>
+  </head>
+
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <h1 onclick="downloadVideo()">Download</h1>
+    <video
+      class="video-js vjs-default-skin vjs-big-play-centered"
+      id="video"
+      controls
+    >
+      <!-- <track
+        src="http://127.0.0.1:8080/output.vtt"
+        srclang="en"
+        label="English"
+        kind="caption"
+        default
+      /> -->
+    </video>
+    <script>
+      window.onload = function() {
+        var video = document.getElementById("video");
+        videojs(
+          "video",
+          {
+            bigPlayButton: true,
+            width: 600,
+            height: 400,
+            textTrackDisplay: true,
+            posterImage: true,
+            errorDisplay: false,
+            controlBar: true,
+            playbackRates: [1, 1.25, 1.5, 2],
+            muted: true
+          },
+          function() {
+            const trackEl = this.addRemoteTextTrack(
+              {
+                src: "http://127.0.0.1:8080/output.vtt",
+                language: "zh_CN",
+                default: true,
+                label: "中文字幕"
+              },
+              true
+            );
+            let isPause = true;
+            let playSource = "自动";
+            window.obj = {
+              formats: ["自动", "标清", "高清", "720P", "1080P"],
+              sources: [
+                "http://127.0.0.1:8080/mult.m3u8",
+                "http://127.0.0.1:8080/标清/output.m3u8",
+                "http://127.0.0.1:8080/超清/index.m3u8",
+                "http://127.0.0.1:8080/超清/index.m3u8",
+                "http://127.0.0.1:8080/超清/index.m3u8"
+              ],
+              cur: 0
+            };
+            var videoPanelMenu = $("div.vjs-playback-rate");
+            videoPanelMenu.before(
+              `<div onclick="let items = event.srcElement.parentNode.children;
+              if(items[0].tagName=='LI'){
+                for(let i=0;i<items.length;i++){
+                  if(event.srcElement.innerHTML==items[i].innerHTML){
+                    items[i].className = 'vjs-menu-item vjs-selected'
+                    window.obj.cur = window.obj.formats.indexOf(event.srcElement.innerHTML)
+                  }else{
+                    items[i].className = 'vjs-menu-item'
+                  }
+                }
+              }else{
+                window.obj.cur=window.obj.cur+1>=window.obj.formats.length?0:window.obj.cur+1;
+                items = items[0].parentNode.parentNode.getElementsByTagName('li');
+                for(let i=0;i<items.length;i++){
+                  if(window.obj.formats[window.obj.cur]==items[i].innerHTML){
+                      items[i].className = 'vjs-menu-item vjs-selected'
+                  }else{
+                    items[i].className = 'vjs-menu-item'
+                  }
+                }
+              }
+              " id="SharpnessWrap" class="vjs-subs-caps-button vjs-menu-button vjs-menu-button-popup vjs-control vjs-button" aria-expanded="false" aria-haspopup="true">
+                <div class="vjs-menu" id="SharpnessMenu" role="presentation">
+                  <ul class="vjs-menu-content" role="menu">
+                    <li class="vjs-menu-item" tabindex="-1" role="menuitemcheckbox">1080P</li>
+                    <li class="vjs-menu-item" tabindex="-1" role="menuitemcheckbox">720P</li>
+                    <li class="vjs-menu-item" tabindex="-1" role="menuitemcheckbox">高清</li>
+                    <li class="vjs-menu-item" tabindex="-1" role="menuitemcheckbox">标清</li>
+                    <li class="vjs-menu-item vjs-selected" tabindex="-1" role="menuitemcheckbox">自动</li>
+                  </ul>
+                </div>
+                <button class="vjs-subs-caps-button vjs-control vjs-button" id="hd" type="button" aria-live="polite" title="Sharpness" aria-disabled="false">
+                    <span aria-hidden="true" class="vjs-icon-hd"></span><span class="vjs-control-text">Sharpness</span>
+                </button>
+                </div>`
+            );
+            // next-item;previous-item;spinner;cog;square;share
+            if (Hls.isSupported()) {
+              let hls = new Hls();
+              window.HLS = hls;
+              console.log(
+                `加载资源文件${window.obj.formats[window.obj.cur] +
+                  ":" +
+                  window.obj.sources[window.obj.cur]}`
+              );
+              hls.loadSource(window.obj.sources[window.obj.cur]);
+              hls.attachMedia(video);
+              video.addEventListener("loadedmetadata", () => {
+                // video.play();
+              });
+              video.addEventListener("timeupdate", function() {
+                if (window.obj.formats[window.obj.cur] !== playSource) {
+                  let temp = window.obj.formats[window.obj.cur];
+                  let curTime = videojs("video").currentTime();
+                  console.log(`切换至 ${temp} 源,时间打点 ${curTime}`);
+                  playSource = temp;
+                  setTimeout(() => {
+                    console.log(
+                      `重新加载资源文件${window.obj.formats[window.obj.cur] +
+                        ":" +
+                        window.obj.sources[window.obj.cur]}`
+                    );
+                    hls.loadSource(window.obj.sources[window.obj.cur]);
+                    hls.attachMedia(video);
+                    videojs("video").currentTime(curTime);
+                    video.play();
+                  });
+                }
+              });
+              // $(document).click(event => console.log(event.srcElement));
+              $("div.vjs-load-progress").click(function(event) {
+                // video.play();
+                // event.
+              });
+              $("div.vjs-mouse-display").click(function(event) {
+                // video.play();
+              });
+              $("div.vjs-play-progress").click(function(event) {
+                // video.play();
+              });
+              $(document).keydown(function(event) {
+                switch (event.keyCode) {
+                  case 37:
+                    video.currentTime -= 2;
+                    break;
+                  case 38:
+                    if (video.muted) {
+                      $("button[title='Unmute']").click();
+                      video.volume = 0.1;
+                    } else video.volume = video.volume + 0.02 > 1.0 ? 1.0 : video.volume + 0.02;
+                    break;
+                  case 39:
+                    video.currentTime += 2;
+                    break;
+                  case 40:
+                    if (video.volume == 0) video.muted = true;
+                    else
+                      video.volume =
+                        video.volume - 0.02 < 0 ? 0 : video.volume - 0.02;
+                    break;
+                  case 32:
+                    handleClick();
+                    break;
+                  default:
+                    break;
+                }
+              });
+              $("button[title='Play']").click(handleClick);
+              $("button[title='Play Video']").click(handleClick);
+              video.onclick = function() {
+                isPause = !isPause;
+                if (!isPause) video.play();
+                else video.pause();
+              };
+              video.onplay = function() {
+                isPause = false;
+              };
+              video.onpause = function(event) {
+                isPause = true;
+              };
+              function handleClick() {
+                if (isPause) {
+                  video.play();
+                } else {
+                  video.pause();
+                }
+              }
+            }
+          }
+        );
+      };
+    </script>
+    <script>
+      function downloadVideo() {
+        console.log(window.obj);
+      }
+    </script>
+  </body>
+</html>

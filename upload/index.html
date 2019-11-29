@@ -7,37 +7,90 @@
     <title>Document</title>
   </head>
   <body>
-    <input type="file" name="file" id="file" />
+    <input type="file" name="file" id="file" onchange="queryLastFile(event)" />
     <progress id="progress" value="0" max="100"></progress>
-    <input type="button" value="upload" onclick="init()" />
-    <input type="button" value="pause" onclick="pause()" />
+    <input
+      type="button"
+      id="btn"
+      value="点击开始上传"
+      onclick="checkStatus(event)"
+    />
     <script>
-      const chunkSize = 1024 * 40;
+      const chunkSize = 1024 * 1024;
+      if (document.getElementById("file").files.length > 0) {
+        document.getElementById("file").outerHTML = document.getElementById(
+          "file"
+        ).outerHTML;
+      }
       let progress = document.getElementById("progress");
       let isPause = false;
-      let stat = 0;
+      let curUploadFile = { start: null, filename: null };
+      let fileObj = null;
+      let btnType = [
+        "点击开始上传",
+        "正在上传中，点击暂停",
+        "已经暂停，点击继续上传",
+        "上传完成"
+      ];
+      function checkStatus(event) {
+        let subject = event.srcElement;
+        let status = subject.value;
+        if (status == btnType[0]) {
+          init();
+          subject.value = btnType[1];
+        } else if (status == btnType[1] || status == btnType[2]) {
+          if (isPause) subject.value = btnType[1];
+          else subject.value = btnType[2];
+          isPause = !isPause;
+          pause();
+        } else {
+          initData();
+        }
+      }
+      function initData() {
+        if (document.getElementById("file").files.length > 0) {
+          document.getElementById("file").outerHTML = document.getElementById(
+            "file"
+          ).outerHTML;
+        }
+        progress.max = 100;
+        progress.value = 0;
+        isPause = false;
+        curUploadFile = { start: null, filename: null };
+        fileObj = null;
+      }
+      function queryLastFile(event) {
+        let lastFileInfo = JSON.parse(localStorage.getItem("FileInfo"));
+        let curFileInfo = event.srcElement.files[0];
+        if (lastFileInfo && lastFileInfo.filename == curFileInfo.name) {
+          document.getElementById("progress").max = curFileInfo.size;
+          document.getElementById("progress").value = ~~lastFileInfo.start;
+          document.getElementById("btn").value = btnType[2];
+          isPause = true;
+        }
+      }
       function pause() {
-        isPause = !isPause;
+        let fileObj = document.getElementById("file").files[0];
         if (!isPause) {
-          uploadFile(stat);
+          uploadFile(
+            parseInt(JSON.parse(localStorage.getItem("FileInfo")).start)
+          );
         }
       }
       function init() {
         let fileObj = document.getElementById("file").files[0];
+        curUploadFile.filename = fileObj.name;
         progress.max = fileObj.size;
         let xhr = new XMLHttpRequest();
         let fd = new FormData();
         fd.append("fileName", fileObj.name);
-        xhr.open("POST", "http://127.0.0.1:8080/queryName", true);
+        xhr.open("POST", "http://127.0.0.1:8080/upload/queryName", true);
         xhr.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
-            let start = parseInt(this.responseText);
-            progress.value = start;
-            if (start === fileObj.size) {
-              console.log("upload success");
-              return;
-            }
-            uploadFile(start);
+            progress.value = parseInt(this.responseText);
+            curUploadFile.start = parseInt(this.responseText);
+            localStorage.setItem("FileInfo", JSON.stringify(curUploadFile));
+            uploadFile(parseInt(this.responseText));
           }
         };
         xhr.send(fd);
@@ -45,22 +98,26 @@
       function uploadFile(start) {
         let fileObj = document.getElementById("file").files[0];
         if (start >= fileObj.size) {
-          stat = 0;
+          document.getElementById("btn").value = btnType[3];
+          // localStorage.removeItem("FileInfo");
           return;
         }
         let end =
           start + chunkSize > fileObj.size ? fileObj.size : start + chunkSize;
         let fd = new FormData();
         fd.append("file", fileObj.slice(start, end), fileObj.name);
+        console.log("splice:" + start + ":" + end);
         fd.append("index", Math.ceil(start / chunkSize).toString());
         fd.append("isEnd", end >= fileObj.size ? true : false);
         let xhr = new XMLHttpRequest();
-        xhr.open("post", "http://127.0.0.1:8080/uploadFile", true);
+        xhr.open("post", "http://127.0.0.1:8080/upload/uploadFile", true);
         xhr.onload = function() {
           if (this.readyState == 4 && this.status == 200) {
             progress.value = end;
             if (!isPause) {
-              stat = end;
+              curUploadFile.start = end;
+              localStorage.setItem("FileInfo", JSON.stringify(curUploadFile));
+              //上传，没有暂停
               uploadFile(end);
             }
           }

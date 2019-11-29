@@ -1,22 +1,13 @@
 const express = require("express");
-const app = express();
 const fs = require("fs");
 const path = require("path");
-const bodyParser = require("body-parser");
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
 const multer = require("multer");
-var upload = multer({ dest: "../temp" });
+const multer_upload = multer({ dest: path.resolve(__dirname, "../temp") });
 const multiparty = require("multiparty");
 const { mergeFragment } = require("../utils");
-app.all("*", function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Headers", "X-Requested-With");
-  res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
-  next();
-});
+const router = express.Router();
 
-app.post("/queryName", (req, res) => {
+router.post("/queryName", (req, res) => {
   let form = new multiparty.Form();
   form.parse(req, function(err, fields, file) {
     console.log(fields.fileName);
@@ -30,7 +21,7 @@ app.post("/queryName", (req, res) => {
     res.end("0");
   });
 });
-app.post("/uploadFile", upload.single("file"), (req, res) => {
+router.post("/uploadFile", multer_upload.single("file"), (req, res) => {
   let { index, isEnd } = req.body;
   fs.renameSync(
     path.resolve(__dirname, `../temp/${req.file.filename}`),
@@ -39,12 +30,15 @@ app.post("/uploadFile", upload.single("file"), (req, res) => {
   if (isEnd == "true") {
     mergeFragment(
       path.resolve(__dirname, "../temp"),
-      path.resolve(__dirname, `../assets/${req.file.originalname}`)
+      path.resolve(
+        __dirname,
+        `../assets/${req.file.originalname.split(".")[0]}/${
+          req.file.originalname
+        }`
+      )
     );
   }
   res.end("upload success");
 });
 
-app.listen(8080, () => {
-  console.log("http://127.0.0.1:8080/");
-});
+module.exports = router;

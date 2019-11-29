@@ -10,7 +10,12 @@ function mergeFragment(tempDirPath, assetsPath) {
     fs.unlinkSync(assetsPath);
   }
   let chunks = fs.readdirSync(tempDirPath);
-  fs.writeFileSync(assetsPath, "");
+  let reg = /assets\\(.*?)\\(.*?)$/;
+  let [, dirName] = assetsPath.match(reg);
+  if (!fs.existsSync(path.resolve(__dirname, `../assets/${dirName}`))) {
+    fs.mkdirSync(path.resolve(__dirname, `../assets/${dirName}`));
+    fs.writeFileSync(assetsPath, "");
+  }
   chunks = chunks.sort((a, b) => a.split("-")[1] - b.split("-")[1]);
   for (let i = 0; i < chunks.length; i++) {
     fs.appendFileSync(
