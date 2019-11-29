@@ -99,7 +99,7 @@
         let fileObj = document.getElementById("file").files[0];
         if (start >= fileObj.size) {
           document.getElementById("btn").value = btnType[3];
-          // localStorage.removeItem("FileInfo");
+          localStorage.removeItem("FileInfo");
           return;
         }
         let end =
@@ -114,10 +114,10 @@
         xhr.onload = function() {
           if (this.readyState == 4 && this.status == 200) {
             progress.value = end;
+            curUploadFile.start = end;
+            localStorage.setItem("FileInfo", JSON.stringify(curUploadFile));
             if (!isPause) {
-              curUploadFile.start = end;
-              localStorage.setItem("FileInfo", JSON.stringify(curUploadFile));
-              //上传，没有暂停
+              //上传中
               uploadFile(end);
             }
           }
