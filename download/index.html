@@ -45,6 +45,7 @@
         );
         xhr.onreadystatechange = function() {
           if (this.readyState == 4 && this.status == 200) {
+            console.log(this);
             let blob = new Blob([xhr.response], { type: "video/mp4" });
             let link = document.createElement("a");
             link.href = window.URL.createObjectURL(blob);

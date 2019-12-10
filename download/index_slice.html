@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <span id="downFile"></span>
+    <progress id="progress" value="0" max="100"></progress>
+    <input
+      id="btn"
+      type="button"
+      value="开始下载"
+      onclick="checkStatus(event)"
+    />
+    <script>
+      let progress = document.getElementById("progress");
+      let chunkSize = 1024 * 1024;
+      let loadSize = 0;
+      let fileSize = 0;
+      let buffer = null;
+      let isPause = false;
+      let btnType = [
+        "开始下载",
+        "下载中，点击暂停",
+        "暂停中，点击继续",
+        "下载完成"
+      ];
+      function checkStatus(event) {
+        let subject = event.srcElement;
+        let status = subject.value;
+        if (status == btnType[0]) {
+          down();
+          subject.value = btnType[1];
+        } else if (status == btnType[1] || status == btnType[2]) {
+          if (isPause) subject.value = btnType[1];
+          else subject.value = btnType[2];
+          isPause = !isPause;
+          pause();
+        } else {
+          initData();
+        }
+      }
+      function initData() {
+        loadSize = 0;
+        fileSize = 0;
+        buffer = null;
+        isPause = false;
+        progress.value = 0;
+        progress.max = 0;
+      }
+      function pause() {
+        if (!isPause) {
+          let file = JSON.parse(localStorage.getItem("DownFile"));
+          download(file.filename);
+        }
+      }
+      function down() {
+        let downFile = document.getElementById("downFile");
+        let xhr = new XMLHttpRequest();
+        xhr.open(
+          "get",
+          "http://127.0.0.1:8080/download/query?file=jiangshan&type=标清",
+          true
+        );
+        xhr.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status == 200) {
+            let r = JSON.parse(this.responseText);
+            if ("err" in r) {
+              downFile.innerHTML = r.err;
+            } else {
+              progress.max = ~~r.size;
+              downFile.innerHTML = r.filename;
+              fileSize = r.size;
+              buffer = [];
+              localStorage.setItem("DownFile", JSON.stringify(r));
+              download(r.filename);
+            }
+          }
+        };
+        xhr.send();
+      }
+      function download(filename) {
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = "arraybuffer";
+        xhr.open(
+          "get",
+          "http://127.0.0.1:8080/download/down?file=jiangshan&type=标清",
+          true
+        );
+        let loadEnd =
+          loadSize + chunkSize > fileSize ? fileSize - 1 : loadSize + chunkSize;
+        xhr.setRequestHeader("Range", `bytes=${loadSize}-${loadEnd}`);
+        xhr.onreadystatechange = function() {
+          if (this.readyState == 4 && this.status.toString().startsWith("2")) {
+            if (!isPause) {
+              loadSize = loadEnd + 1;
+              progress.value = loadSize;
+              buffer.push(new Uint8Array(xhr.response));
+              if (loadSize >= fileSize) {
+                let blob = new Blob([...buffer], {
+                  type: "video/mp4"
+                });
+                let link = document.createElement("a");
+                link.href = window.URL.createObjectURL(blob);
+                link.download = filename + ".mp4";
+                link.click();
+                window.URL.revokeObjectURL(link.href);
+                document.getElementById("btn").value = btnType[3];
+                localStorage.removeItem("DownFile");
+              } else {
+                download(filename);
+              }
+            }
+          } else if (this.status == 416) {
+            document.getElementById("downFile").innerHTML =
+              "assets length invalid";
+          }
+        };
+        xhr.send();
+      }
+    </script>
+  </body>
+</html>

@@ -4,7 +4,7 @@ const path = require("path");
 const multer = require("multer");
 const multer_upload = multer({ dest: path.resolve(__dirname, "../temp") });
 const multiparty = require("multiparty");
-const { mergeFragment } = require("../utils");
+const { mergeFragment } = require("../utils/mergeFragment");
 const router = express.Router();
 
 router.post("/queryName", (req, res) => {
