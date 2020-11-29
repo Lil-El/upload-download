@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Excel下载</title>
+  </head>
+  <body>
+    <div onclick="download()">XHR Download</div>
+    <div onclick="jDownload()">jQuery Download</div>
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <script>
+      function download() {
+        let xhr = new XMLHttpRequest();
+        xhr.responseType = "arraybuffer";
+        xhr.open("post", "http://127.0.0.1:8080/download/downExcel", true);
+        xhr.onreadystatechange = function () {
+          if (this.readyState == 4 && this.status == 200) {
+            let [_, fileName] = this.getResponseHeader(
+              "Content-Disposition"
+            ).match(/filename=(.*)$/);
+            let blob = new Blob([xhr.response], {
+              type: "application/vnd.ms-excel",
+            });
+            let link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+            window.URL.revokeObjectURL(link.href);
+          }
+        };
+        xhr.send();
+      }
+      function jDownload() {
+        $.ajax({
+          method: "post",
+          url: "http://127.0.0.1:8080/download/downExcel",
+          // responseType: "arraybuffer",
+          xhrFields: {
+            responseType: "arraybuffer",
+          },
+          success: function (res, _, xhr) {
+            let [, fileName] = xhr
+              .getResponseHeader("Content-Disposition")
+              .match(/filename=(.*)$/);
+            let blob = new Blob([res], {
+              type: "application/vnd.ms-excel",
+            });
+            let link = document.createElement("a");
+            link.href = window.URL.createObjectURL(blob);
+            link.download = fileName;
+            link.click();
+            window.URL.revokeObjectURL(link.href);
+          },
+        });
+      }
+    </script>
+  </body>
+</html>

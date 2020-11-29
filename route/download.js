@@ -16,7 +16,7 @@ router.get("/query", (req, res) => {
   if (!isExists) {
     res.end(
       JSON.stringify({
-        err: `您要找的 '${query.file}' 资源不存在`
+        err: `您要找的 '${query.file}' 资源不存在`,
       })
     );
   }
@@ -24,7 +24,7 @@ router.get("/query", (req, res) => {
   res.end(
     JSON.stringify({
       filename: `${query.file}`,
-      size: statObj.size
+      size: statObj.size,
     })
   );
 });
@@ -46,7 +46,7 @@ router.get("/down", (req, res) => {
     res.set({
       statusCode,
       "Content-Range": ContentRange,
-      "Content-Type": "text/plain"
+      "Content-Type": "text/plain",
     });
     res.end("assets length invalid");
   }
@@ -55,8 +55,18 @@ router.get("/down", (req, res) => {
     "Content-Range": ContentRange,
     "Content-Type": "application/octet-stream",
     "Content-Disposition": `attachment; filename=${query.file}.mp4`,
-    "Content-Length": End - Start + 1
+    "Content-Length": End - Start + 1,
   });
   fs.createReadStream(assetsPath, { start: Start, end: End }).pipe(res);
 });
+
+router.post("/downExcel", (req, res) => {
+  let assetsPath = path.resolve(__dirname, "../assets/1.xlsx");
+  res.set("Access-Control-Expose-Headers", "Content-Disposition");
+  // res.set("Content-Type", "application/vnd.ms-excel");
+  res.set("Content-Type", "application/octet-stream");
+  res.set("Content-Disposition", `attachment; filename=mino.xlsx`);
+  fs.createReadStream(assetsPath).pipe(res);
+});
+
 module.exports = router;

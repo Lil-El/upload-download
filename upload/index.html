@@ -105,8 +105,9 @@
         let end =
           start + chunkSize > fileObj.size ? fileObj.size : start + chunkSize;
         let fd = new FormData();
+
         fd.append("file", fileObj.slice(start, end), fileObj.name);
-        console.log("splice:" + start + ":" + end);
+
         fd.append("index", Math.ceil(start / chunkSize).toString());
         fd.append("isEnd", end >= fileObj.size ? true : false);
         let xhr = new XMLHttpRequest();

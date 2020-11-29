@@ -401,15 +401,7 @@
       class="video-js vjs-default-skin vjs-big-play-centered"
       id="video"
       controls
-    >
-      <!-- <track
-        src="http://127.0.0.1:8080/output.vtt"
-        srclang="en"
-        label="English"
-        kind="caption"
-        default
-      /> -->
-    </video>
+    ></video>
     <script>
       window.onload = function() {
         var video = document.getElementById("video");
@@ -427,25 +419,16 @@
             muted: true
           },
           function() {
-            const trackEl = this.addRemoteTextTrack(
-              {
-                src: "http://127.0.0.1:8080/output.vtt",
-                language: "zh_CN",
-                default: true,
-                label: "中文字幕"
-              },
-              true
-            );
             let isPause = true;
             let playSource = "自动";
             window.obj = {
               formats: ["自动", "标清", "高清", "720P", "1080P"],
               sources: [
-                "http://127.0.0.1:8080/mult.m3u8",
-                "http://127.0.0.1:8080/标清/output.m3u8",
-                "http://127.0.0.1:8080/超清/index.m3u8",
-                "http://127.0.0.1:8080/超清/index.m3u8",
-                "http://127.0.0.1:8080/超清/index.m3u8"
+                "http://127.0.0.1:8080/assets/jiangshan/mult.m3u8",
+                "http://127.0.0.1:8080/assets/jiangshan/标清/output.m3u8",
+                "http://127.0.0.1:8080/assets/jiangshan/超清/index.m3u8",
+                "http://127.0.0.1:8080/assets/jiangshan/超清/index.m3u8",
+                "http://127.0.0.1:8080/assets/jiangshan/超清/index.m3u8"
               ],
               cur: 0
             };
