@@ -38,7 +38,7 @@
 - [route 路由文件目录](./route)
 - [utils 流处理工具目录](./utils)
 
-### frontend code
+### frontend code (javascript)
 
 - [download 文件下载示例](./download)
   - [excel.html](./download/excel.html): 使用 jQuery 下载 excel 文件
@@ -46,3 +46,28 @@
   - [index_slice.html](./download/index_slice.html): 使用 xhr 下载 mp4 文件，通过设置 Range 请求头实现断点下载功能
 - [upload 文件上传示例](./upload)
   - [index.html](./upload/index.html): 使用 xhr 将文件 slice 分割后，分段上传，实现断点续传
+
+#### run
+
+```bash
+node app.js
+```
+
+or
+
+```bash
+npm i pm2 -g
+pm2 start app.js --watch
+```
+
+### vue frontend code (vue)
+
+- [vue-transfer](./vue-transfer): 对(断点)上传、下载进行封装
+
+#### run
+
+```bash
+cd vue-transfer
+npm i
+npm run serve
+```
