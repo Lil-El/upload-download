@@ -38,15 +38,6 @@
 - [route 路由文件目录](./route)
 - [utils 流处理工具目录](./utils)
 
-### frontend code (javascript)
-
-- [download 文件下载示例](./download)
-  - [excel.html](./download/excel.html): 使用 jQuery 下载 excel 文件
-  - [index.html](./download/index.html): 使用 xhr 下载 mp4 文件
-  - [index_slice.html](./download/index_slice.html): 使用 xhr 下载 mp4 文件，通过设置 Range 请求头实现断点下载功能
-- [upload 文件上传示例](./upload)
-  - [index.html](./upload/index.html): 使用 xhr 将文件 slice 分割后，分段上传，实现断点续传
-
 #### run
 
 ```bash
@@ -59,6 +50,19 @@ or
 npm i pm2 -g
 pm2 start app.js --watch
 ```
+
+### frontend code (javascript)
+
+- [download 文件下载示例](./download)
+  - [excel.html](./download/excel.html): 使用 jQuery 下载 excel 文件
+  - [index.html](./download/index.html): 使用 xhr 下载 mp4 文件
+  - [index_slice.html](./download/index_slice.html): 使用 xhr 下载 mp4 文件，通过设置 Range 请求头实现断点下载功能
+- [upload 文件上传示例](./upload)
+  - [index.html](./upload/index.html): 使用 xhr 将文件 slice 分割后，分段上传，实现断点续传
+
+#### run
+
+通过 `live server` 插件，在浏览器中打开对应的 html 文件
 
 ### vue frontend code (vue)
 
