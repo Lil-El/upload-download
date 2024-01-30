@@ -16,9 +16,7 @@
         xhr.open("post", "http://127.0.0.1:8080/download/downExcel", true);
         xhr.onreadystatechange = function () {
           if (this.readyState == 4 && this.status == 200) {
-            let [_, fileName] = this.getResponseHeader(
-              "Content-Disposition"
-            ).match(/filename=(.*)$/);
+            let [_, fileName] = this.getResponseHeader("Content-Disposition").match(/filename=(.*)$/);
             let blob = new Blob([xhr.response], {
               type: "application/vnd.ms-excel",
             });
@@ -40,9 +38,7 @@
             responseType: "arraybuffer",
           },
           success: function (res, _, xhr) {
-            let [, fileName] = xhr
-              .getResponseHeader("Content-Disposition")
-              .match(/filename=(.*)$/);
+            let [, fileName] = xhr.getResponseHeader("Content-Disposition").match(/filename=(.*)$/);
             let blob = new Blob([res], {
               type: "application/vnd.ms-excel",
             });

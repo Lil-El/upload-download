@@ -3,10 +3,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Emmm</title>
-    <link
-      href="https://unpkg.com/video.js/dist/video-js.css"
-      rel="stylesheet"
-    />
+    <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet" />
     <style>
       .video-js .vjs-menu-button-inline.vjs-slider-active,
       .video-js .vjs-menu-button-inline:focus,
@@ -85,10 +82,7 @@
         width: 8.35em;
       }
 
-      .video-js
-        .vjs-volume-menu-button.vjs-volume-menu-button-horizontal:hover
-        .vjs-menu
-        .vjs-menu-content {
+      .video-js .vjs-volume-menu-button.vjs-volume-menu-button-horizontal:hover .vjs-menu .vjs-menu-content {
         height: 3em;
         width: 6.35em;
       }
@@ -197,14 +191,10 @@
         transition: transform 0.1s ease 0s;
       }
 
-      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-active
-        .vjs-control-bar,
-      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive
-        .vjs-control-bar,
-      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-active
-        .vjs-control-bar,
-      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive
-        .vjs-control-bar,
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-active .vjs-control-bar,
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive .vjs-control-bar,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-active .vjs-control-bar,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive .vjs-control-bar,
       .video-js.vjs-has-started.vjs-playing.vjs-user-inactive .vjs-control-bar {
         visibility: visible;
         opacity: 1;
@@ -221,16 +211,11 @@
         transition: transform 1s ease 0s;
       }
 
-      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-active
-        .vjs-progress-control,
-      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive
-        .vjs-progress-control,
-      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-active
-        .vjs-progress-control,
-      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive
-        .vjs-progress-control,
-      .video-js.vjs-has-started.vjs-playing.vjs-user-inactive
-        .vjs-progress-control {
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-active .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-active .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive .vjs-progress-control,
+      .video-js.vjs-has-started.vjs-playing.vjs-user-inactive .vjs-progress-control {
         height: 0.25em;
         top: -0.25em;
         pointer-events: none;
@@ -241,16 +226,11 @@
         transition: height 1s, top 1s;
       }
 
-      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-active.vjs-fullscreen
-        .vjs-progress-control,
-      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive.vjs-fullscreen
-        .vjs-progress-control,
-      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-active.vjs-fullscreen
-        .vjs-progress-control,
-      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive.vjs-fullscreen
-        .vjs-progress-control,
-      .video-js.vjs-has-started.vjs-playing.vjs-user-inactive.vjs-fullscreen
-        .vjs-progress-control {
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-active.vjs-fullscreen .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-paused.vjs-user-inactive.vjs-fullscreen .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-active.vjs-fullscreen .vjs-progress-control,
+      .video-js.not-hover.vjs-has-started.vjs-playing.vjs-user-inactive.vjs-fullscreen .vjs-progress-control,
+      .video-js.vjs-has-started.vjs-playing.vjs-user-inactive.vjs-fullscreen .vjs-progress-control {
         opacity: 0;
         -webkit-transition: opacity 1s ease 1s;
         -moz-transition: opacity 1s ease 1s;
@@ -276,8 +256,7 @@
         font-size: 3.5em;
         background-color: rgba(0, 0, 0, 0.45);
         color: #fff;
-        -webkit-transition: border-color 0.4s, outline 0.4s,
-          background-color 0.4s;
+        -webkit-transition: border-color 0.4s, outline 0.4s, background-color 0.4s;
         -moz-transition: border-color 0.4s, outline 0.4s, background-color 0.4s;
         -ms-transition: border-color 0.4s, outline 0.4s, background-color 0.4s;
         -o-transition: border-color 0.4s, outline 0.4s, background-color 0.4s;
@@ -397,13 +376,9 @@
   <body>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <h1 onclick="downloadVideo()">Download</h1>
-    <video
-      class="video-js vjs-default-skin vjs-big-play-centered"
-      id="video"
-      controls
-    ></video>
+    <video class="video-js vjs-default-skin vjs-big-play-centered" id="video" controls></video>
     <script>
-      window.onload = function() {
+      window.onload = function () {
         var video = document.getElementById("video");
         videojs(
           "video",
@@ -416,9 +391,9 @@
             errorDisplay: false,
             controlBar: true,
             playbackRates: [1, 1.25, 1.5, 2],
-            muted: true
+            muted: true,
           },
-          function() {
+          function () {
             let isPause = true;
             let playSource = "自动";
             window.obj = {
@@ -428,9 +403,9 @@
                 "http://127.0.0.1:8080/assets/jiangshan/标清/output.m3u8",
                 "http://127.0.0.1:8080/assets/jiangshan/超清/index.m3u8",
                 "http://127.0.0.1:8080/assets/jiangshan/超清/index.m3u8",
-                "http://127.0.0.1:8080/assets/jiangshan/超清/index.m3u8"
+                "http://127.0.0.1:8080/assets/jiangshan/超清/index.m3u8",
               ],
-              cur: 0
+              cur: 0,
             };
             var videoPanelMenu = $("div.vjs-playback-rate");
             videoPanelMenu.before(
@@ -475,16 +450,14 @@
               let hls = new Hls();
               window.HLS = hls;
               console.log(
-                `加载资源文件${window.obj.formats[window.obj.cur] +
-                  ":" +
-                  window.obj.sources[window.obj.cur]}`
+                `加载资源文件${window.obj.formats[window.obj.cur] + ":" + window.obj.sources[window.obj.cur]}`
               );
               hls.loadSource(window.obj.sources[window.obj.cur]);
               hls.attachMedia(video);
               video.addEventListener("loadedmetadata", () => {
                 // video.play();
               });
-              video.addEventListener("timeupdate", function() {
+              video.addEventListener("timeupdate", function () {
                 if (window.obj.formats[window.obj.cur] !== playSource) {
                   let temp = window.obj.formats[window.obj.cur];
                   let curTime = videojs("video").currentTime();
@@ -492,9 +465,7 @@
                   playSource = temp;
                   setTimeout(() => {
                     console.log(
-                      `重新加载资源文件${window.obj.formats[window.obj.cur] +
-                        ":" +
-                        window.obj.sources[window.obj.cur]}`
+                      `重新加载资源文件${window.obj.formats[window.obj.cur] + ":" + window.obj.sources[window.obj.cur]}`
                     );
                     hls.loadSource(window.obj.sources[window.obj.cur]);
                     hls.attachMedia(video);
@@ -504,17 +475,17 @@
                 }
               });
               // $(document).click(event => console.log(event.srcElement));
-              $("div.vjs-load-progress").click(function(event) {
+              $("div.vjs-load-progress").click(function (event) {
                 // video.play();
                 // event.
               });
-              $("div.vjs-mouse-display").click(function(event) {
+              $("div.vjs-mouse-display").click(function (event) {
                 // video.play();
               });
-              $("div.vjs-play-progress").click(function(event) {
+              $("div.vjs-play-progress").click(function (event) {
                 // video.play();
               });
-              $(document).keydown(function(event) {
+              $(document).keydown(function (event) {
                 switch (event.keyCode) {
                   case 37:
                     video.currentTime -= 2;
@@ -530,9 +501,7 @@
                     break;
                   case 40:
                     if (video.volume == 0) video.muted = true;
-                    else
-                      video.volume =
-                        video.volume - 0.02 < 0 ? 0 : video.volume - 0.02;
+                    else video.volume = video.volume - 0.02 < 0 ? 0 : video.volume - 0.02;
                     break;
                   case 32:
                     handleClick();
@@ -543,15 +512,15 @@
               });
               $("button[title='Play']").click(handleClick);
               $("button[title='Play Video']").click(handleClick);
-              video.onclick = function() {
+              video.onclick = function () {
                 isPause = !isPause;
                 if (!isPause) video.play();
                 else video.pause();
               };
-              video.onplay = function() {
+              video.onplay = function () {
                 isPause = false;
               };
-              video.onpause = function(event) {
+              video.onpause = function (event) {
                 isPause = true;
               };
               function handleClick() {

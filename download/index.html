@@ -16,12 +16,8 @@
         let progress = document.getElementById("progress");
         let downFile = document.getElementById("downFile");
         let xhr = new XMLHttpRequest();
-        xhr.open(
-          "get",
-          "http://127.0.0.1:8080/download/query?file=jiangshan&type=标清",
-          true
-        );
-        xhr.onreadystatechange = function() {
+        xhr.open("get", "http://127.0.0.1:8080/download/query?file=jiangshan&type=标清", true);
+        xhr.onreadystatechange = function () {
           if (this.readyState == 4 && this.status == 200) {
             let r = JSON.parse(this.responseText);
             if ("err" in r) {
@@ -38,12 +34,8 @@
       function download(filename) {
         let xhr = new XMLHttpRequest();
         xhr.responseType = "arraybuffer";
-        xhr.open(
-          "get",
-          "http://127.0.0.1:8080/download/down?file=jiangshan&type=标清",
-          true
-        );
-        xhr.onreadystatechange = function() {
+        xhr.open("get", "http://127.0.0.1:8080/download/down?file=jiangshan&type=标清", true);
+        xhr.onreadystatechange = function () {
           if (this.readyState == 4 && this.status == 200) {
             console.log(this);
             let blob = new Blob([xhr.response], { type: "video/mp4" });
